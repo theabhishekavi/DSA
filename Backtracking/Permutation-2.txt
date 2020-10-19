@@ -1,0 +1,42 @@
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+Example:
+
+Input: [1,1,2]
+Output:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+
+
+
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        boolean[] visited = new boolean[nums.length];
+        Arrays.sort(nums);
+        permuteHelper(res,temp,nums,visited);
+        return res;
+    }
+    void permuteHelper(List<List<Integer>> res,List<Integer> temp,int[] nums,boolean[] visited){
+        if(temp.size()==nums.length){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for(int i = 0;i<nums.length;i++){
+            if(visited[i])
+                continue;
+            visited[i] = true;
+            temp.add(nums[i]);
+            permuteHelper(res,temp,nums,visited);
+            visited[i] = false;
+            temp.remove(temp.size()-1);
+            while(i+1<nums.length && nums[i]==nums[i+1])
+                i++;
+        }
+        
+    }
+}
